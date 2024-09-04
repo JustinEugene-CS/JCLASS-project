@@ -14,7 +14,11 @@ Here are some ideas to get you started and add to this comment section:
 -->
 
 #Computer Languages: Java
+
 ##Group Project (this is where i'd like for the project name to go)
+
 ##Project Description
+
 ##Group Members and Respective Roles
+
 Justin Eugene, Jake Salter, Tony, Yamen
