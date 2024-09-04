@@ -1,8 +1,8 @@
 <!--
 This is the readme section.
-if possible, use this whenever you can to add or substract 
-any information that will be necessary for the full project
-like project description, etc. 
+Use this whenever possible to add or subtract
+any information necessary for the full project,
+such as project description. 
 
 Here are some ideas to get you started and add to this comment section:
 
@@ -13,12 +13,12 @@ Here are some ideas to get you started and add to this comment section:
 - 💬 Ask me about ...
 -->
 
-#Computer Languages: Java
+# Computer Languages: Java
 
-##Group Project (this is where i'd like for the project name to go)
+## Group Project (this is where I'd like for the project name to go)
 
-##Project Description
+## Project Description
 
-##Group Members and Respective Roles
+## Group Members and Respective Roles
 
 Justin Eugene, Jake Salter, Tony, Yamen
