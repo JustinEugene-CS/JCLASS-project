@@ -21,4 +21,7 @@ Here are some ideas to get you started and add to this comment section:
 
 ## Group Members and Respective Roles
 
-Justin Eugene, Jake Salter, Tony, Yamen
+Justin Eugene - Workout Regime Recommendation
+Jake Salter -  Database
+Tony - Connections
+Yamen - GUI
