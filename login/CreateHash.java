@@ -1,5 +1,13 @@
 package login;
 
+/*
+Used to create a new password
+
+if you're trying to login then you'll
+need to enter the salt which will 
+look through the hash to find your data
+*/
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
