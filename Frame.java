@@ -3,6 +3,11 @@ package corner;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+*THis is the setup for our fitness app/GUI
+*all of the interface stuff will be here
+*/
+
 public class Frame extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
