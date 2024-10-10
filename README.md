@@ -19,6 +19,11 @@ Here are some ideas to get you started and add to this comment section:
 
 ## Project Description
 
+So far, we have a few classes and a basic understanding of what they do. 
+The CreateHash is what deals with the login information,
+whether they're creating a new account or logging back into their account
+
+The Frame class is the GUI interface.
 ## Group Members and Respective Roles
 
 1. Justin Eugene - Workout Regime Recommendation
