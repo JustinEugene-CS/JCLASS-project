@@ -46,4 +46,34 @@ public class SignOn {
 		}
 	}
 
+	public static boolean existing_user_login(String username, String password) {
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Statement statement = conn.createStatement();
+			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
+														   "WHERE LoginName = '" + username + "'");
+			int id = getUserInfo.getInt(1);
+			String database_password = getUserInfo.getString(3);
+			String salt = getUserInfo.getString(4);
+			try {
+				String hashed_password = CreateHash.getSecurePassword(password, salt);
+				System.out.println("Hashed Password: " + hashed_password);
+				System.out.println("Salt: " + salt);
+				if(hashed_password.equals(database_password)) {
+					System.out.println("True!");
+					return true;
+				} else{
+					System.out.println("False!");
+					return false;
+				}
+			} catch(NoSuchProviderException | NoSuchAlgorithmException e) {
+				System.out.println(e);
+				return false;
+			}
+		} catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+
 }
