@@ -28,6 +28,16 @@ public class SignOn {
 			} catch(NoSuchProviderException | NoSuchAlgorithmException e) {
 				System.out.println(e);
 				return false;
+			} finally {
+				if(getUserInfo != null) {
+					getUserInfo.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
 			}
 		} catch(SQLException e) {
 			System.out.println(e);
@@ -45,26 +55,33 @@ public class SignOn {
 				System.out.println("Username does not exists.");
 				return false;
 			}
-			int id = getUserInfo.getInt("UserID");
 			String database_password = getUserInfo.getString("PasswordHash");
 			String salt = getUserInfo.getString("PasswordSalt");
 			try {
 				String hashed_password = CreateHash.getSecurePassword(password, salt);
 				if(hashed_password.equals(database_password)) {
-					System.out.println("True!");
 					return true;
 				} else{
-					System.out.println("False!");
 					return false;
 				}
 			} catch(NoSuchProviderException | NoSuchAlgorithmException e) {
 				System.out.println(e);
 				return false;
+			} finally {
+				if(getUserInfo != null) {
+					getUserInfo.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
 			}
+		
 		} catch(SQLException e) {
 			System.out.println(e);
 			return false;
 		}
 	}
-
 }
