@@ -34,6 +34,10 @@ public class Excercise {
 	void set_body_part(String b_p){
 		body_part = b_p;
 	}
+
+	void set_equipment(String e) {
+		equipment = e;
+	}
 	
 	void set_level(String l){
 		level = l;
