@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class GetExcercises {
+<<<<<<< HEAD
 	public static void main(String args[]) {
 		ArrayList<Excercise> my_excercises = get_excercises("Strength", "Chest", "Beginner");
 		for(Excercise e : my_excercises) {
@@ -15,6 +16,8 @@ public class GetExcercises {
 		}
 	}
 	
+=======
+>>>>>>> 1d4f3531d13fc6fcb5a09401a83e3b3cb9ff7871
 	public static ArrayList<Excercise> get_excercises(String type, String body_part, String level) {
 		try { 
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
