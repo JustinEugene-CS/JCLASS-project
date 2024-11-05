@@ -19,7 +19,7 @@ public class GetExcercises {
 	}
 	public static ArrayList<Excercise> get_excercises(String type, String body_part, String level) {
 		try { 
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet result =  statement.executeQuery("SELECT * FROM workout WHERE type = '" + type 
 					                                   + "' AND body_part = '" + body_part + "' AND level = '" + level + "'");

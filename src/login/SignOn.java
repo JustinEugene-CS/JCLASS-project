@@ -1,17 +1,17 @@
 package login;
 
-import java.sql.DriverManager;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
-import java.security.NoSuchProviderException;
-import java.security.NoSuchAlgorithmException;
 
 public class SignOn {
 	public static boolean add_user(String username, String password) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 			                                               "WHERE LoginName = '" + username + "';");
@@ -47,7 +47,7 @@ public class SignOn {
 
 	public static boolean existing_user_login(String username, String password) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 														   "WHERE LoginName = '" + username + "'");
