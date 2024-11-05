@@ -9,7 +9,7 @@ public class Excercise {
 	String level;
 	float rating;
 	
-	Excercise(String t, String d, String type, String b_p, String e, String l, float r){
+	public Excercise(String t, String d, String type, String b_p, String e, String l, float r){
 		title = t;
 		desc = d;
 		this.type = type;

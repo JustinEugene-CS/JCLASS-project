@@ -8,15 +8,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class GetExcercises {
-	public static void main (String [] args) {
+	public static void main(String args[]) {
 		ArrayList<Excercise> my_excercises = get_excercises("Strength", "Chest", "Beginner");
-		if(my_excercises == null) {
-			System.out.println("Error!");
-		}
 		for(Excercise e : my_excercises) {
-			System.out.println(e.get_title());
+			System.out.println(e.body_part);
 		}
 	}
+	
 	public static ArrayList<Excercise> get_excercises(String type, String body_part, String level) {
 		try { 
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
@@ -24,7 +22,7 @@ public class GetExcercises {
 			ResultSet result =  statement.executeQuery("SELECT * FROM workout WHERE type = '" + type 
 					                                   + "' AND body_part = '" + body_part + "' AND level = '" + level + "'");
 			ArrayList<Excercise> my_excercises = new ArrayList<Excercise>();
-			if(result != null) {
+			if(result.isBeforeFirst()) {
 				while(result.next()) {
 					my_excercises.add(new Excercise(result.getString("title"),
 													result.getString("desc"),
