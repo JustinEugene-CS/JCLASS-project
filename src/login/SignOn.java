@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 public class SignOn {
 	public static boolean add_user(String username, String password) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 			                                               "WHERE LoginName = '" + username + "';");
@@ -47,7 +47,7 @@ public class SignOn {
 
 	public static boolean existing_user_login(String username, String password) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:src/database/java-trainer.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 														   "WHERE LoginName = '" + username + "'");
