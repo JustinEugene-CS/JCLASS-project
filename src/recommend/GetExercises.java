@@ -36,7 +36,7 @@ public class GetExercises {
 			if(conn != null) {
 				conn.close();
 			}
-			return my_excercises;
+			return my_exercises;
 			
 		} catch (SQLException e) {
 			System.out.println(e);
