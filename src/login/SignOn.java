@@ -106,23 +106,23 @@ public class SignOn {
 				userHeight = getUserPersonalInfo.getInt(2);
 				userWeight = getUserPersonalInfo.getInt(3);
 			}
-			ResultSet getUserPreviousExcercises = statement.executeQuery("SELECT w.*, pw.weight FROM workout w " + 
+			ResultSet getUserPreviousExercises = statement.executeQuery("SELECT w.*, pw.weight FROM workout w " + 
 																		 "JOIN previous_workouts pw ON pw.workoutid=w.id " +
 																		 "WHERE pw.UserID = " + UserID);
-			ArrayList<Excercise> previous_excercises = new ArrayList<Excercise>();
-			if(getUserPreviousExcercises.isBeforeFirst()) {
+			ArrayList<Exercise> previous_exercises = new ArrayList<Exercise>();
+			if(getUserPreviousExercises.isBeforeFirst()) {
 				while(getUserPreviousExcercises.next()) {
-				previous_excercises.add(new Excercise(getUserPreviousExcercises.getString("title"),
-													  getUserPreviousExcercises.getString("desc"),
-													  getUserPreviousExcercises.getString("type"),
-													  getUserPreviousExcercises.getString("body_part"),
-													  getUserPreviousExcercises.getString("equipment"),
-													  getUserPreviousExcercises.getString("level"),
-													  getUserPreviousExcercises.getFloat("rating"),
-													  getUserPreviousExcercises.getInt("weight")));
+				previous_excercises.add(new Excercise(getUserPreviousExercises.getString("title"),
+													  getUserPreviousExercises.getString("desc"),
+													  getUserPreviousExercises.getString("type"),
+													  getUserPreviousExercises.getString("body_part"),
+													  getUserPreviousExercises.getString("equipment"),
+													  getUserPreviousExercises.getString("level"),
+													  getUserPreviousExercises.getFloat("rating"),
+													  getUserPreviousExercises.getInt("weight")));
 				}
 			}
-			User current_user = new User(username, userAge, userHeight, userWeight, previous_excercises);
+			User current_user = new User(username, userAge, userHeight, userWeight, previous_exercises);
 			CurrentUserSession.getCurrentSession().setCurrentUser(current_user);
 		} catch(SQLException e) {
 			System.out.println("Problem creating current user: " + e);

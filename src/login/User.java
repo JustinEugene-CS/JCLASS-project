@@ -1,22 +1,34 @@
 package login;
 
 import java.util.ArrayList;
-import recommend.Excercise;
+import recommend.Exercise;
 
 public class User {
 	private String username;
+	private int user_id;
 	private int age;
 	private int height;
 	private int weight;
+	private String goals;
+	private int frequency;
+	private String level;
 	
-	ArrayList<Excercise> previous_excercises;
+	ArrayList<Exercise> previous_exercises;
 	
-	public User(String u, int a, int h, int w, ArrayList<Excercise> p_e) {
+	public User(String u, int id, int a, int h, int w, String g, int f, String l, ArrayList<Exercise> p_e) {
 		username = u;
+		user_id = id;
 		age = a;
 		height = h;
 		weight = w;
-		previous_excercises = p_e;
+		goals  = g;
+		frequency = f;
+		level = l;
+		previous_exercises = p_e;
+	}
+	
+	public int getID() {
+		return user_id;
 	}
 	
 	public String getUsername() {
@@ -35,13 +47,25 @@ public class User {
 		return weight;
 	}
 	
-	public ArrayList<Excercise> getPreviousExcercises(){
-		return previous_excercises;
+	public ArrayList<Exercise> getPreviousExcercises(){
+		return previous_exercises;
+	}
+	
+	public String getGoals() {
+		return goals;
+	}
+	
+	public int getFrequency() {
+		return frequency;
+	}
+	
+	public String getLevel() {
+		return level;
 	}
 	
 	public String toString() {
 		String statement = "Username: " + username + " Age: " + age + " Height: " + height + " Weight: " + weight;
-		for(Excercise current : previous_excercises) {
+		for(Exercise current : previous_exercises) {
 			statement += " Title: " + current.get_title();
 		}
 		return statement;
