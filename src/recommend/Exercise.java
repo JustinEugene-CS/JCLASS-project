@@ -1,6 +1,6 @@
 package recommend;
 
-public class Excercise {
+public class Exercise {
 	private String title;
 	private String desc;
 	private String type;
@@ -10,7 +10,7 @@ public class Excercise {
 	private float rating;
 	private int weight;
 	
-	public Excercise(String t, String d, String type, String b_p, String e, String l, float r, int w){
+	public Exercise(String t, String d, String type, String b_p, String e, String l, float r, int w){
 		title = t;
 		desc = d;
 		this.type = type;
