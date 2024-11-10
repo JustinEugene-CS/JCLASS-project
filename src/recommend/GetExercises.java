@@ -14,10 +14,10 @@ public class GetExercises {
 			Statement statement = conn.createStatement();
 			ResultSet result =  statement.executeQuery("SELECT * FROM workout WHERE type = '" + type 
 					                                   + "' AND body_part = '" + body_part + "' AND level = '" + level + "'");
-			ArrayList<Excercise> my_excercises = new ArrayList<Excercise>();
+			ArrayList<Excercise> my_exercises = new ArrayList<Exercise>();
 			if(result.isBeforeFirst()) {
 				while(result.next()) {
-					my_excercises.add(new Excercise(result.getString("title"),
+					my_excercises.add(new Exercise(result.getString("title"),
 													result.getString("desc"),
 													result.getString("type"),
 													result.getString("body_part"),
