@@ -23,7 +23,8 @@ public class GetExcercises {
 													result.getString("body_part"),
 													result.getString("equipment"),
 													result.getString("level"),
-													result.getFloat("rating")));
+													result.getFloat("rating"),
+								                                        0));
 				}
 			}
 			if(result != null) {
