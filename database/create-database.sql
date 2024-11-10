@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS workout (
 CREATE TABLE IF NOT EXISTS previous_workouts (
     UserID INTEGER,
     WorkoutID INTEGER,
+    [Weight] INTEGER,
     FOREIGN KEY (UserID) REFERENCES user_login_data(UserID),
     FOREIGN KEY (WorkoutID) REFERENCES workout(id),
     PRIMARY KEY (UserID, WorkoutID)

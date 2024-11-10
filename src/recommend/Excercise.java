@@ -1,15 +1,16 @@
 package recommend;
 
 public class Excercise {
-	String title;
-	String desc;
-	String type;
-	String body_part;
-	String equipment;
-	String level;
-	float rating;
+	private String title;
+	private String desc;
+	private String type;
+	private String body_part;
+	private String equipment;
+	private String level;
+	private float rating;
+	private int weight;
 	
-	public Excercise(String t, String d, String type, String b_p, String e, String l, float r){
+	public Excercise(String t, String d, String type, String b_p, String e, String l, float r, int w){
 		title = t;
 		desc = d;
 		this.type = type;
@@ -17,61 +18,70 @@ public class Excercise {
 		equipment = e;
 		level = l;
 		rating = r;
+		weight = w;
 	}
 	
-	void set_title(String t){
+	public void set_title(String t){
 		title = t;
 	}
 	
-	void set_desc(String d){
+	public void set_desc(String d){
 		desc = d;
 	}
 	
-	void set_type(String t){
+	public void set_type(String t){
 		type = t;
 	}
 	
-	void set_body_part(String b_p){
+	public void set_body_part(String b_p){
 		body_part = b_p;
 	}
 
-	void set_equipment(String e) {
+	public void set_equipment(String e) {
 		equipment = e;
 	}
 	
-	void set_level(String l){
+	public void set_level(String l){
 		level = l;
 	}
 	
-	void set_rating(float r){
+	public void set_rating(float r){
 		rating = r;
 	}
 	
-	String get_title() {
+	public void set_weight(int w) {
+		weight = w;
+	}
+	
+	public String get_title() {
 		return title;
 	}
 	
-	String get_desc() {
+	public String get_desc() {
 		return desc;
 	} 
 	
-	String get_type() {
+	public String get_type() {
 		return type;
 	}
 	
-	String get_body_part() {
+	public String get_body_part() {
 		return body_part;
 	}
 	
-	String get_equipment() {
+	public String get_equipment() {
 		return equipment;
 	}
 	
-	String get_level() {
+	public String get_level() {
 		return level;
 	}
 	
-	float get_rating() {
+	public float get_rating() {
 		return rating;
+	}
+	
+	public int get_weight() {
+		return weight;
 	}
 }

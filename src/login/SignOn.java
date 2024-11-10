@@ -17,12 +17,16 @@ public class SignOn {
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 			                                               "WHERE LoginName = '" + username + "';");
+			
+			// Returns false if the user name is already in the database
 			if(getUserInfo.next() != false) {
 				System.out.println("Username taken.");
 				return false;
 			}
 			try {
+				// Hashes the user's password
 				String[] hashed_password_plus_salt = CreateHash.getSecurePassword(password);
+				// Stores hashed password to database
 				statement.executeUpdate("INSERT INTO user_login_data (LoginName, PasswordHash, PasswordSalt) "
 						+ "VALUES ('" + username + "', '" + hashed_password_plus_salt[0] + "', '" 
 						+ hashed_password_plus_salt[1] + "');");
@@ -53,7 +57,7 @@ public class SignOn {
 			Statement statement = conn.createStatement();
 			ResultSet getUserInfo = statement.executeQuery("SELECT * FROM user_login_data " + 
 														   "WHERE LoginName = '" + username + "'");
-			if(getUserInfo.next() == false) {
+			if(!getUserInfo.isBeforeFirst()) {
 				System.out.println("Username does not exists.");
 				return false;
 			}
@@ -63,7 +67,8 @@ public class SignOn {
 			try {
 				String hashed_password = CreateHash.getSecurePassword(password, salt);
 				if(hashed_password.equals(database_password)) {
-					setCurrentUser(username, UserID);
+					setCurrentUser(username, UserID, statement);
+					System.out.println(CurrentUserSession.getCurrentSession().getCurrentUser());
 					return true;
 				} else{
 					return false;
@@ -89,23 +94,21 @@ public class SignOn {
 		}
 	}
 	
-	private static void setCurrentUser(String username, int UserID) {
+	private static void setCurrentUser(String username, int UserID, Statement statement) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
-			Statement statement = conn.createStatement();
-			ResultSet getUserPersonalInfo = statement.executeQuery("SELECT * FROM user_personal_data " +
+			ResultSet getUserPersonalInfo = statement.executeQuery("SELECT age, height, weight FROM user_personal_data " +
 			                 									   "WHERE UserID = " + UserID);
-			ResultSet getUserPreviousExcercises = statement.executeQuery("SELECT * FROM workout w " + 
-																		 "JOIN previous_workouts pw ON pw.workoutid=w.id " +
-																		 "WHERE pw.UserID = " + UserID);
 			int userAge = 0;
 			int userHeight = 0;
 			int userWeight = 0;
 			if(getUserPersonalInfo.isBeforeFirst()) {
-				userAge = getUserPersonalInfo.getInt("Age");
-				userHeight = getUserPersonalInfo.getInt("Height");
-				userWeight = getUserPersonalInfo.getInt("Weight");
+				userAge = getUserPersonalInfo.getInt(1);
+				userHeight = getUserPersonalInfo.getInt(2);
+				userWeight = getUserPersonalInfo.getInt(3);
 			}
+			ResultSet getUserPreviousExcercises = statement.executeQuery("SELECT w.*, pw.weight FROM workout w " + 
+																		 "JOIN previous_workouts pw ON pw.workoutid=w.id " +
+																		 "WHERE pw.UserID = " + UserID);
 			ArrayList<Excercise> previous_excercises = new ArrayList<Excercise>();
 			if(getUserPreviousExcercises.isBeforeFirst()) {
 				while(getUserPreviousExcercises.next()) {
@@ -115,13 +118,14 @@ public class SignOn {
 													  getUserPreviousExcercises.getString("body_part"),
 													  getUserPreviousExcercises.getString("equipment"),
 													  getUserPreviousExcercises.getString("level"),
-													  getUserPreviousExcercises.getFloat("rating")));
+													  getUserPreviousExcercises.getFloat("rating"),
+													  getUserPreviousExcercises.getInt("weight")));
 				}
 			}
 			User current_user = new User(username, userAge, userHeight, userWeight, previous_excercises);
 			CurrentUserSession.getCurrentSession().setCurrentUser(current_user);
 		} catch(SQLException e) {
-			System.out.println(e);
+			System.out.println("Problem creating current user: " + e);
 		}
 	}
 }

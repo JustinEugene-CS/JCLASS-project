@@ -38,4 +38,12 @@ public class User {
 	public ArrayList<Excercise> getPreviousExcercises(){
 		return previous_excercises;
 	}
+	
+	public String toString() {
+		String statement = "Username: " + username + " Age: " + age + " Height: " + height + " Weight: " + weight;
+		for(Excercise current : previous_excercises) {
+			statement += " Title: " + current.get_title();
+		}
+		return statement;
+	}
 }
