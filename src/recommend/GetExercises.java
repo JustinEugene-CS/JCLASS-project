@@ -17,7 +17,7 @@ public class GetExercises {
 			ArrayList<Exercise> my_exercises = new ArrayList<Exercise>();
 			if(result.isBeforeFirst()) {
 				while(result.next()) {
-					my_excercises.add(new Exercise(result.getString("title"),
+					my_exercises.add(new Exercise(result.getString("title"),
 													result.getString("desc"),
 													result.getString("type"),
 													result.getString("body_part"),
