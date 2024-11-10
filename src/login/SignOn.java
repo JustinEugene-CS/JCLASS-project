@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.security.NoSuchProviderException;
 import java.security.NoSuchAlgorithmException;
-import recommend.Excercise;
+import recommend.Exercise;
 import java.util.ArrayList;
 
 public class SignOn {
@@ -96,33 +96,48 @@ public class SignOn {
 	
 	private static void setCurrentUser(String username, int UserID, Statement statement) {
 		try {
-			ResultSet getUserPersonalInfo = statement.executeQuery("SELECT age, height, weight FROM user_personal_data " +
+			ResultSet getUserPersonalInfo = statement.executeQuery("SELECT age, height, weight, goals, freq, level FROM user_personal_data " +
 			                 									   "WHERE UserID = " + UserID);
 			int userAge = 0;
 			int userHeight = 0;
 			int userWeight = 0;
+			String userGoals = null;
+			int userFrequency = 0;
+			String userLevel = null;
 			if(getUserPersonalInfo.isBeforeFirst()) {
 				userAge = getUserPersonalInfo.getInt(1);
 				userHeight = getUserPersonalInfo.getInt(2);
 				userWeight = getUserPersonalInfo.getInt(3);
+				userGoals = getUserPersonalInfo.getString(4);
+				userFrequency = getUserPersonalInfo.getInt(5);
+				userLevel = getUserPersonalInfo.getString(6);
+				
 			}
-			ResultSet getUserPreviousExercises = statement.executeQuery("SELECT w.*, pw.weight FROM workout w " + 
+			ResultSet getUserPreviousExcercises = statement.executeQuery("SELECT w.*, pw.weight FROM workout w " + 
 																		 "JOIN previous_workouts pw ON pw.workoutid=w.id " +
 																		 "WHERE pw.UserID = " + UserID);
-			ArrayList<Exercise> previous_exercises = new ArrayList<Exercise>();
-			if(getUserPreviousExercises.isBeforeFirst()) {
+			ArrayList<Exercise> previous_excercises = new ArrayList<Exercise>();
+			if(getUserPreviousExcercises.isBeforeFirst()) {
 				while(getUserPreviousExcercises.next()) {
-				previous_excercises.add(new Excercise(getUserPreviousExercises.getString("title"),
-													  getUserPreviousExercises.getString("desc"),
-													  getUserPreviousExercises.getString("type"),
-													  getUserPreviousExercises.getString("body_part"),
-													  getUserPreviousExercises.getString("equipment"),
-													  getUserPreviousExercises.getString("level"),
-													  getUserPreviousExercises.getFloat("rating"),
-													  getUserPreviousExercises.getInt("weight")));
+				previous_excercises.add(new Exercise(getUserPreviousExcercises.getString("title"),
+													  getUserPreviousExcercises.getString("desc"),
+													  getUserPreviousExcercises.getString("type"),
+													  getUserPreviousExcercises.getString("body_part"),
+													  getUserPreviousExcercises.getString("equipment"),
+													  getUserPreviousExcercises.getString("level"),
+													  getUserPreviousExcercises.getFloat("rating"),
+													  getUserPreviousExcercises.getInt("weight")));
 				}
 			}
-			User current_user = new User(username, userAge, userHeight, userWeight, previous_exercises);
+			User current_user = new User(username,
+										 UserID,
+										 userAge,
+										 userHeight,
+										 userWeight,
+										 userGoals,
+										 userFrequency,
+										 userLevel,
+										 previous_excercises);
 			CurrentUserSession.getCurrentSession().setCurrentUser(current_user);
 		} catch(SQLException e) {
 			System.out.println("Problem creating current user: " + e);
