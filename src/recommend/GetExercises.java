@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class GetExercises {
-	public static ArrayList<Excercise> get_excercises(String type, String body_part, String level) {
+	public static ArrayList<Excercise> get_exercises(String type, String body_part, String level) {
 		try { 
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			Statement statement = conn.createStatement();
 			ResultSet result =  statement.executeQuery("SELECT * FROM workout WHERE type = '" + type 
 					                                   + "' AND body_part = '" + body_part + "' AND level = '" + level + "'");
-			ArrayList<Excercise> my_exercises = new ArrayList<Exercise>();
+			ArrayList<Exercise> my_exercises = new ArrayList<Exercise>();
 			if(result.isBeforeFirst()) {
 				while(result.next()) {
 					my_excercises.add(new Exercise(result.getString("title"),
