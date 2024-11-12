@@ -8,7 +8,7 @@ import login.CurrentUserSession;
 import java.sql.PreparedStatement;
 
 public class StoreUserInfo {
-	public boolean store_user_info(int age, int height, int weight, String goals, int frequency, String level) {
+	public static boolean store_user_info(int age, int height, int weight, String goals, int frequency, String level) {
 		try {
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
 			String insert_statement = "INSERT INTO user_personal_data (UserID, Age, Weight, Height, Goals, Freq, Level) " +
