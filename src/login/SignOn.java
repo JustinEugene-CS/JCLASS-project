@@ -35,6 +35,7 @@ public class SignOn {
 							insert.setString(2, hashed_password_plus_salt[0]);
 							insert.setString(3, hashed_password_plus_salt[1]);
 							insert.executeUpdate();
+							existing_user_login(username, password);
 							return true;
 						}
 					} catch (NoSuchProviderException | NoSuchAlgorithmException e) {
