@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import login.CurrentUserSession;
 
 import java.sql.PreparedStatement;
+import login.User;
 
 public class StoreUserInfo {
 	public static void main(String[] args) {
@@ -13,6 +14,14 @@ public class StoreUserInfo {
 	}
 	
 	public static boolean store_user_info(int age, int height, int weight, String goals, int frequency, String level) {
+		User current_user = CurrentUserSession.getCurrentSession().getCurrentUser();
+		current_user.setAge(age);
+		current_user.setHeight(height);
+		current_user.setWeight(weight);
+		current_user.setGoals(goals);
+		current_user.setFrequency(frequency);
+		current_user.setLevel(level);
+		CurrentUserSession.getCurrentSession().setCurrentUser(current_user);
 		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db")){
 				String insert_statement = "INSERT INTO user_personal_data (UserID, Age, Weight, Height, Goals, Freq, Level) " +
 										  "VALUES (?, ?, ?, ?, ?, ?, ?)";

@@ -27,6 +27,42 @@ public class User {
 		previous_exercises = p_e;
 	}
 	
+	public void setUsername(String u) {
+		username = u;
+	}
+	
+	public void setID(int id) {
+		user_id = id;
+	}
+	
+	public void setAge(int a) {
+		age = a;
+	}
+	
+	public void setHeight(int h) {
+		height = h;
+	}
+	
+	public void setWeight(int w) {
+		weight = w;
+	}
+	
+	public void setGoals(String g) {
+		goals = g;
+	}
+	
+	public void setFrequency(int f) {
+		frequency = f;
+	}
+	
+	public void setLevel(String l) {
+		level = l;
+	}
+	
+	public void setPreviousExercises(ArrayList<Exercise> p_e) {
+		previous_exercises = p_e;
+	}
+	
 	public int getID() {
 		return user_id;
 	}

@@ -7,7 +7,14 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
+import login.CurrentUserSession;
 import login.SignOn;
+import recommend.Exercise;
+import recommend.WorkoutPlan;
+import recommend.WorkoutPlanBuilder;
+import login.User;
+
+import java.util.ArrayList;;
 
 public class Main extends Application {
 
@@ -73,7 +80,10 @@ public class Main extends Application {
         loginButton.setOnAction(event -> {
             if (SignOn.existing_user_login(usernameField.getText(), passwordField.getText())) {
                 showAlert("Login Successful", "Welcome back, " + usernameField.getText() + "!");
-                showHomePage(usernameField.getText());
+                User user = CurrentUserSession.getCurrentSession().getCurrentUser(); // Fetch user details
+                WorkoutPlanBuilder planBuilder = new WorkoutPlanBuilder();
+                WorkoutPlan workoutPlan = planBuilder.createWorkoutPlan(user); // Generate workout plan
+                showWorkoutPlanScreen(workoutPlan); // Display workout plan
             } else {
                 showAlert("Login Failed", "Invalid username or password.");
             }
@@ -86,6 +96,7 @@ public class Main extends Application {
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
+
 
     private void showRegisterScreen() {
         VBox registerLayout = new VBox(10);
@@ -105,7 +116,7 @@ public class Main extends Application {
         registerButton.setOnAction(event -> {
             if (SignOn.add_user(usernameField.getText(), passwordField.getText())) {
                 showAlert("Registration Successful", "Welcome to JAVA TRAINER, " + usernameField.getText() + "!");
-                showQuestionnaireScreen(usernameField.getText());
+                showQuestionnaireScreen(usernameField.getText()); // Show questionnaire after registration
             } else {
                 showAlert("Registration Failed", "Username may already be taken or there's a database issue.");
             }
@@ -118,6 +129,7 @@ public class Main extends Application {
         primaryStage.setScene(registerScene);
         primaryStage.show();
     }
+
 
     private void showQuestionnaireScreen(String username) {
         VBox questionnaireLayout = new VBox(15);
@@ -147,6 +159,9 @@ public class Main extends Application {
         goalsBox.getItems().addAll("Strength training", "Weight loss", "Endurance");
         goalsBox.setPromptText("Select your fitness goal");
         goalsBox.setMaxWidth(200);
+        goalsBox.setOnAction(event -> {
+            System.out.println("GoalsBox Selection: " + goalsBox.getValue());
+        });
 
         ComboBox<Integer> frequencyBox = new ComboBox<>();
         frequencyBox.getItems().addAll(2, 3, 4, 5, 6);
@@ -163,23 +178,34 @@ public class Main extends Application {
         submitButton.setOnAction(event -> {
             try {
                 int age = Integer.parseInt(ageField.getText().trim());
-                int height = parseHeight(heightField.getText());
+                int height = parseHeight(heightField.getText().trim());
                 int weight = Integer.parseInt(weightField.getText().trim());
                 String goals = goalsBox.getValue();
-                int frequency = frequencyBox.getValue();
+                Integer frequency = frequencyBox.getValue();
                 String level = levelBox.getValue();
-                System.out.print(age+" "+ height+" "+weight+" "+ goals+" "+frequency+" "+level);
+
+                System.out.println("Goals: " + goals);
+                System.out.println("Frequency: " + frequency);
+                System.out.println("Level: " + level);
+
+                if (goals == null || frequency == null || level == null) {
+                    showAlert("Selection Error", "Please ensure all selections are made.");
+                    return;
+                }
+
                 if (StoreUserInfo.store_user_info(age, height, weight, goals, frequency, level)) {
-                    System.out.print(age+" "+ height);
                     showAlert("Questionnaire Submitted", "Thank you, " + username + ", for completing the questionnaire!");
-                    showHomePage(username);
+                    User user = CurrentUserSession.getCurrentSession().getCurrentUser(); // Fetch user data
+                    WorkoutPlanBuilder planBuilder = new WorkoutPlanBuilder();
+                    WorkoutPlan workoutPlan = planBuilder.createWorkoutPlan(user); // Generate workout plan
+                    showWorkoutPlanScreen(workoutPlan); // Display workout plan
                 } else {
                     showAlert("Database Error", "Failed to store data. Please try again.");
                 }
             } catch (NumberFormatException e) {
                 showAlert("Input Error", "Please ensure all numeric fields are correctly filled.");
-            } catch (NullPointerException e) {
-                showAlert("Selection Error", "Please ensure all selections are made.");
+            } catch (Exception e) {
+                showAlert("Error", "An unexpected error occurred: " + e.getMessage());
             }
         });
 
@@ -189,6 +215,50 @@ public class Main extends Application {
         primaryStage.setScene(questionnaireScene);
         primaryStage.show();
     }
+
+
+
+    private void showWorkoutPlanScreen(WorkoutPlan workoutPlan) {
+        VBox workoutLayout = new VBox(15);
+        workoutLayout.setAlignment(Pos.CENTER);
+        workoutLayout.setPadding(new Insets(20));
+        workoutLayout.setStyle("-fx-background-color: #2c3e50;");
+
+        Label titleLabel = new Label("Your Workout Plan");
+        titleLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 28px; -fx-font-weight: bold;");
+
+        int currentWeek = workoutPlan.getCur();
+        ArrayList<Exercise> exercises = workoutPlan.getWeek(currentWeek);
+
+        VBox exerciseList = new VBox(10);
+        for (Exercise exercise : exercises) {
+            Label exerciseLabel = new Label(exercise.toString()); // Assuming Exercise class has a meaningful toString
+            exerciseLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 16px;");
+            exerciseList.getChildren().add(exerciseLabel);
+        }
+
+        Button nextButton = new Button("Next Week");
+        nextButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        nextButton.setOnAction(event -> {
+            workoutPlan.incCur();
+            if (workoutPlan.getCur() < workoutPlan.getDuration()) {
+                showWorkoutPlanScreen(workoutPlan); // Show the next week's workout plan
+            } else {
+                showAlert("End of Plan", "You have completed all weeks of your workout plan!");
+            }
+        });
+
+        Button backButton = new Button("Logout");
+        backButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+        backButton.setOnAction(event -> showWelcomeScreen());
+
+        workoutLayout.getChildren().addAll(titleLabel, exerciseList, nextButton, backButton);
+
+        Scene workoutScene = new Scene(workoutLayout, 400, 400);
+        primaryStage.setScene(workoutScene);
+        primaryStage.show();
+    }
+
 
     private int parseHeight(String heightStr) {
         String[] parts = heightStr.split("[\'\"]");
@@ -233,6 +303,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
-
-       
