@@ -100,7 +100,7 @@ public class User {
 	}
 	
 	public String toString() {
-		String statement = "Username: " + username + " Age: " + age + " Height: " + height + " Weight: " + weight;
+		String statement = "Username: " + username + " Age: " + age + " Height: " + height + " Weight: " + weight + " Level: " + level;
 		for(Exercise current : previous_exercises) {
 			statement += " Title: " + current.get_title();
 		}

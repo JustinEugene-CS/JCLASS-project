@@ -30,7 +30,7 @@ public class WorkoutPlanBuilder {
         int frequency = user.getFrequency(); // User's workout frequency
         
         switch (goal) {
-            case "Strength Training":
+            case "Strength training":
                 if (frequency == 6) {  // Push, Pull, Legs (x2)
                     addPush(week[0]); addPull(week[1]); addLegs(week[2]);
                     addPush(week[3]); addPull(week[4]); addLegs(week[5]);
@@ -47,7 +47,7 @@ public class WorkoutPlanBuilder {
                 }
                 break;
 
-            case "Weight Loss":
+            case "Weight loss":
                 if (frequency == 6) {  // Push, Pull, Legs + Cardio (x2)
                     addPush(week[0]); addPull(week[1]);
                     addLegs(week[2]); addCardioExercises(week[2]);
