@@ -84,4 +84,8 @@ public class Exercise {
 	public int get_weight() {
 		return weight;
 	}
+	
+	public String toString() {
+		return (title + " " + desc + " " + body_part + " " + equipment);
+	}
 }
