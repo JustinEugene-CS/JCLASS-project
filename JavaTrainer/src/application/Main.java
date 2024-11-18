@@ -23,7 +23,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("Workout App");
+        primaryStage.setTitle("JavaTrainer");
         showWelcomeScreen();
     }
 
@@ -169,7 +169,7 @@ public class Main extends Application {
         frequencyBox.setMaxWidth(200);
 
         ComboBox<String> levelBox = new ComboBox<>();
-        levelBox.getItems().addAll("Beginner", "Intermediate", "Advanced");
+        levelBox.getItems().addAll("Beginner", "Intermediate", "Expert");
         levelBox.setPromptText("Fitness level");
         levelBox.setMaxWidth(200);
 
