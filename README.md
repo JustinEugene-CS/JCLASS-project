@@ -28,5 +28,5 @@ The Frame class is the GUI interface.
 
 1. Justin Eugene - Workout Regime Recommendation
 2. Jake Salter -  Database
-3. Tony - Connections
-4. Yamen - GUI
+3. Tony Nguyen - Connections
+4. Yamen Abogamiza - GUI
