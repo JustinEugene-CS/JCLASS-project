@@ -93,7 +93,7 @@ public class WorkoutPlanBuilder {
                 return null;
         }
         
-        return new WorkoutPlan(user, week, duration);
+        return new WorkoutPlan(week, duration);
     }
 
     

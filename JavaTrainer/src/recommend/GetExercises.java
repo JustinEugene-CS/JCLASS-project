@@ -7,7 +7,14 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class GetExercises {	
+public class GetExercises {
+	public static void main(String[] args) {
+		ArrayList<Exercise> test = get_exercises("Strength", "Shoulder", "Advanced");
+		for(Exercise e : test) {
+			System.out.println(e.get_title());
+		}
+		System.out.println("Hello, World!");
+	}
 	public static ArrayList<Exercise> get_exercises(String type, String body_part, String level) {
 		try { 
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database/java-trainer.db");
