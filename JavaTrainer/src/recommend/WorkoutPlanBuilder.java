@@ -131,7 +131,12 @@ public class WorkoutPlanBuilder {
     }
 
     private Exercise selectRandomExercise(ArrayList<Exercise> exercises) {
-        int index = random.nextInt(exercises.size());
-        return exercises.get(index);
+    	if(exercises.size() > 0) {
+    		int index = random.nextInt(exercises.size());
+            return exercises.get(index);
+    	} else {
+    		return null;
+    	}
+        
     }
 }
