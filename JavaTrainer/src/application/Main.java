@@ -15,11 +15,11 @@ import recommend.WorkoutPlan;
 import recommend.WorkoutPlanBuilder;
 import login.User;
 
-import java.util.ArrayList;;
+import java.util.ArrayList;
 
 public class Main extends Application {
-int screenWidth=800;
-int screenLength=800;
+    int screenWidth = 800;
+    int screenLength = 800;
     private Stage primaryStage;
 
     @Override
@@ -27,7 +27,6 @@ int screenLength=800;
         this.primaryStage = primaryStage;
         primaryStage.setTitle("JavaTrainer");
         showWelcomeScreen();
-       
     }
 
     private void showWelcomeScreen() {
@@ -100,7 +99,6 @@ int screenLength=800;
         primaryStage.show();
     }
 
-
     private void showRegisterScreen() {
         VBox registerLayout = new VBox(10);
         registerLayout.setAlignment(Pos.CENTER);
@@ -132,7 +130,6 @@ int screenLength=800;
         primaryStage.setScene(registerScene);
         primaryStage.show();
     }
-
 
     private void showQuestionnaireScreen(String username) {
         VBox questionnaireLayout = new VBox(15);
@@ -172,9 +169,10 @@ int screenLength=800;
         frequencyBox.setMaxWidth(200);
 
         ComboBox<String> levelBox = new ComboBox<>();
-        levelBox.getItems().addAll("Beginner", "Intermediate", "Expert");
-        levelBox.setPromptText("Fitness level");
+        levelBox.getItems().addAll("Beginner", "Intermediate", "Expert"); // Add your list of items
+        levelBox.setPromptText("Fitness level"); // Set the placeholder text separately
         levelBox.setMaxWidth(200);
+
 
         Button submitButton = new Button("Submit");
         submitButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;");
@@ -218,22 +216,60 @@ int screenLength=800;
         primaryStage.setScene(questionnaireScene);
         primaryStage.show();
     }
-
-
-
+    
     private void showWorkoutPlanScreen(WorkoutPlan workoutPlan) {
+        String[] daysOfWeek = {"Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"};
+        int frequency = CurrentUserSession.getCurrentSession().getCurrentUser().getFrequency();
+        int currentDay = workoutPlan.getCur(); // Get the current day index (0-based)
+
+        // Define workout days based on user's frequency
+        boolean[] workoutDays = determineWorkoutDays(frequency);
+
         VBox workoutLayout = new VBox(15);
         workoutLayout.setAlignment(Pos.CENTER);
         workoutLayout.setPadding(new Insets(20));
         workoutLayout.setStyle("-fx-background-color: #2c3e50;");
 
-        Label titleLabel = new Label("Your Workout Plan");
+        Label titleLabel = new Label();
         titleLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 28px; -fx-font-weight: bold;");
 
         TableView<Exercise> workoutTable = new TableView<>();
-        workoutTable.setStyle("-fx-background-color: #34495e; -fx-table-cell-border-color: transparent;");
+        setupWorkoutTable(workoutTable);
 
-        // Define columns
+        ArrayList<Exercise> exercises = workoutDays[currentDay] ? workoutPlan.getWeek(currentDay) : new ArrayList<>();
+        if (exercises.isEmpty() && workoutDays[currentDay]) {
+            exercises = getFallbackExercises(workoutPlan, currentDay);
+        }
+
+        titleLabel.setText(workoutDays[currentDay] ? "Workout Day: " + daysOfWeek[currentDay] : "Rest Day: " + daysOfWeek[currentDay]);
+        workoutTable.getItems().setAll(exercises);
+        workoutTable.setVisible(!exercises.isEmpty());
+
+        Button nextButton = createNavigationButton("Next Day", true, workoutPlan);
+        Button backButton = createNavigationButton("Back", false, workoutPlan);
+        backButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+
+        workoutLayout.getChildren().addAll(titleLabel, workoutTable, nextButton, backButton);
+
+        Scene workoutScene = new Scene(workoutLayout, screenWidth, screenLength);
+        primaryStage.setScene(workoutScene);
+        primaryStage.show();
+    }
+
+    private boolean[] determineWorkoutDays(int frequency) {
+        boolean[] workoutDays = new boolean[7];
+        switch (frequency) {
+            case 2: workoutDays = new boolean[]{true, false, false, true, false, false, false}; break;
+            case 3: workoutDays = new boolean[]{true, false, true, false, true, false, false}; break;
+            case 4: workoutDays = new boolean[]{true, false, true, false, true, false, true}; break;
+            case 5: workoutDays = new boolean[]{true, true, true, false, true, true, false}; break;
+            case 6: workoutDays = new boolean[]{true, true, true, true, true, true, false}; break;
+            case 7: workoutDays = new boolean[]{true, true, true, true, true, true, true}; break;
+        }
+        return workoutDays;
+    }
+
+    private void setupWorkoutTable(TableView<Exercise> workoutTable) {
         TableColumn<Exercise, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get_title()));
         titleColumn.setPrefWidth(200);
@@ -250,45 +286,57 @@ int screenLength=800;
         equipmentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get_equipment()));
         equipmentColumn.setPrefWidth(150);
 
-        // Add columns to the table
         workoutTable.getColumns().addAll(titleColumn, bodyPartColumn, descriptionColumn, equipmentColumn);
+    }
 
-        // Get current day's workout plan
-        int currentDay = workoutPlan.getCur();
-        ArrayList<Exercise> exercises = workoutPlan.getWeek(currentDay);
-
-        if (exercises.isEmpty()) {
-            titleLabel.setText("Rest Day");
-        } else {
-            titleLabel.setText("Your Workout Plan");
-            workoutTable.getItems().addAll(exercises);
-        }
-
-        Button nextButton = new Button("Next Day");
-        nextButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
-        nextButton.setOnAction(event -> {
-            workoutPlan.incCur();
-            if (workoutPlan.getCur() < 7) {
-                showWorkoutPlanScreen(workoutPlan); // Show the next day's workout plan
-            } else {
-                showAlert("End of Plan", "You have completed all sessions of your workout plan!");
-                workoutPlan.incCur(); // Reset or handle ending logic here
+    private Button createNavigationButton(String text, boolean isNext, WorkoutPlan workoutPlan) {
+        Button button = new Button(text);
+        button.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        button.setOnAction(event -> {
+            if (isNext && workoutPlan.getCur() < 6) {
+                workoutPlan.incCur();
+            } else if (!isNext && workoutPlan.getCur() > 0) {
+                workoutPlan.decCur();
             }
+            showWorkoutPlanScreen(workoutPlan);
         });
+        return button;
+    }
 
-        Button backButton = new Button("Logout");
-        backButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
-        backButton.setOnAction(event -> showWelcomeScreen());
-
-        workoutLayout.getChildren().addAll(titleLabel, workoutTable, nextButton, backButton);
-
-        Scene workoutScene = new Scene(workoutLayout, screenWidth, screenLength);
-        primaryStage.setScene(workoutScene);
-        primaryStage.show();
+    private ArrayList<Exercise> getFallbackExercises(WorkoutPlan workoutPlan, int currentDay) {
+        for (int i = currentDay - 1; i >= 0; i--) {
+            if (!workoutPlan.getWeek(i).isEmpty()) {
+                return workoutPlan.getWeek(i);
+            }
+        }
+        return new ArrayList<>(); // Return an empty list if no fallback is found
     }
 
 
 
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     private int parseHeight(String heightStr) {
         String[] parts = heightStr.split("[\'\"]");
@@ -300,36 +348,8 @@ int screenLength=800;
         return 0;
     }
 
-    private void showHomePage(String username) {
-        VBox homeLayout = new VBox(20);
-        homeLayout.setAlignment(Pos.CENTER);
-        homeLayout.setPadding(new Insets(20));
-        homeLayout.setStyle("-fx-background-color: #2c3e50;");
-
-        Label welcomeLabel = new Label("Welcome, " + username + "!");
-        welcomeLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 28px; -fx-font-weight: bold;");
-
-        Button logoutButton = new Button("Logout");
-        logoutButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
-        logoutButton.setOnAction(event -> showWelcomeScreen());
-
-        homeLayout.getChildren().addAll(welcomeLabel, logoutButton);
-        Scene homeScene = new Scene(homeLayout, screenWidth, screenLength);
-        primaryStage.setScene(homeScene);
-        primaryStage.show();
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-       alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    
-
     public static void main(String[] args) {
         launch(args);
     }
 }
+

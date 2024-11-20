@@ -93,6 +93,10 @@ public class WorkoutPlanBuilder {
                 return null;
         }
         
+        for(int i = 0; i < 7; i++) {
+        	while(week[i].remove(null));
+        }
+        
         return new WorkoutPlan(week, duration);
     }
 

@@ -37,4 +37,8 @@ public class WorkoutPlan {
     public void incCur() {
     	curWeek++;
     }
+    
+    public void decCur() {
+    	curWeek--;
+    }
 }
