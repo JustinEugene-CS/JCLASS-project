@@ -6,13 +6,13 @@ import java.util.ArrayList;
 public class WorkoutPlan {
     private ArrayList<Exercise>[] week;
     private int duration;
-    private int curWeek; //
+    private int curDay; //
     private String[] Name; //name of the workout, like Push, Pull, Cardio, 
 
     public WorkoutPlan(ArrayList<Exercise>[] exercises, int duration) {
         this.week = exercises; //all the exercises for that given week
         this.duration = duration; //shows how many times you repeat the week
-        curWeek = 0;
+        curDay = 0;
         //week
         //duration
         //reps, sets, and rests
@@ -31,14 +31,14 @@ public class WorkoutPlan {
     }
     
     public int getCur() {
-    	return curWeek;
+    	return curDay;
     }
     
     public void incCur() {
-    	curWeek++;
+    	curDay++;
     }
     
     public void decCur() {
-    	curWeek--;
+    	curDay--;
     }
 }
