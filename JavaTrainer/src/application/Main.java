@@ -4,6 +4,13 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,6 +51,9 @@ public class Main extends Application {
         primaryStage.setScene(welcomeScene);
         primaryStage.show();
     }
+
+
+
 
     private void showLoginOrRegisterScreen() {
         VBox choiceLayout = new VBox(20);
@@ -242,19 +252,38 @@ public class Main extends Application {
         }
 
         titleLabel.setText(workoutDays[currentDay] ? "Workout Day: " + daysOfWeek[currentDay] : "Rest Day: " + daysOfWeek[currentDay]);
-        workoutTable.getItems().setAll(exercises);
-        workoutTable.setVisible(!exercises.isEmpty());
 
+        if (!workoutDays[currentDay]) {
+            // Display Rest Day image if it's a rest day
+            ImageView restImage = new ImageView(new Image("file:src/application/RestPicture.jpg"));
+            restImage.setFitWidth(300); // Adjust the width of the image
+            restImage.setPreserveRatio(true); // Maintain aspect ratio
+            workoutLayout.getChildren().addAll(titleLabel, restImage);
+        } else {
+            // Show exercises if it's a workout day
+            workoutTable.getItems().setAll(exercises);
+            workoutTable.setVisible(!exercises.isEmpty());
+            workoutLayout.getChildren().addAll(titleLabel, workoutTable);
+        }
+
+        // Add navigation buttons
         Button nextButton = createNavigationButton("Next Day", true, workoutPlan);
         Button backButton = createNavigationButton("Back", false, workoutPlan);
         backButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
 
-        workoutLayout.getChildren().addAll(titleLabel, workoutTable, nextButton, backButton);
-
+        if (currentDay == 6) { // Day 7 (0-based index)
+            Button homeButton = new Button("Back to Home Screen");
+            homeButton.setStyle("-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-size: 14px;");
+            homeButton.setOnAction(event -> showWelcomeScreen()); // Navigate to the welcome screen
+            workoutLayout.getChildren().addAll(nextButton, backButton, homeButton);
+        } else {
+            workoutLayout.getChildren().addAll(nextButton, backButton);
+        }
         Scene workoutScene = new Scene(workoutLayout, screenWidth, screenLength);
         primaryStage.setScene(workoutScene);
         primaryStage.show();
     }
+
 
     private boolean[] determineWorkoutDays(int frequency) {
         boolean[] workoutDays = new boolean[7];
@@ -352,4 +381,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
