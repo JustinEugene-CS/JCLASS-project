@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS user_personal_data (
     Age INTEGER,
     [Weight] INTEGER,
     [Height] INTEGER,
+    Goals Varchar(256),
+    Frequency INTEGER,
+    Level varchar(256),
     FOREIGN KEY (UserID) REFERENCES user_login_data(UserID)
 );
 
