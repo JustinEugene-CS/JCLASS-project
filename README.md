@@ -26,9 +26,9 @@ The Frame class is the GUI interface.
 2. Jake Salter -  Database
 3. Tony Nguyen - Connections
 4. Yamen Abogamiza
-  1) Created welcome page
-  2) Created login/register page
-  3) Created questionnaire
-  4) Created screens for all 7 days
-  5) Created back-and-forth buttons to traverse back
-  and forth between the screens at the user’s discretion
+    1) Created welcome page
+    2) Created login/register page
+    3) Created questionnaire
+    4) Created screens for all 7 days
+    5) Created back-and-forth buttons to traverse back
+    and forth between the screens at the user’s discretion
