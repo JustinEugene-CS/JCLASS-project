@@ -18,6 +18,8 @@ Here are some ideas to get you started and add to this comment section:
 JavaTrainer aims to empower individuals in their fitness journeys by providing a comprehensive and user-friendly tool for tracking workouts. Many individuals face challenges in maintaining a consistent workout routine.
 
 The Frame class is the GUI interface.
+## Project Information:
+To download and actively use the project, go to the master repository and download the project. We used Eclipse IDE to run our project but another IDE should work. 
 ## Group Members and Respective Roles
 
 ### Justin Eugene
