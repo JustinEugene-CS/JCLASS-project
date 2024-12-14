@@ -26,7 +26,6 @@ The Frame class is the GUI interface.
 2. Jake Salter -  Database
 3. Tony Nguyen - Connections
 4. Yamen Abogamiza
-   
   1) Created welcome page
   2) Created login/register page
   3) Created questionnaire
