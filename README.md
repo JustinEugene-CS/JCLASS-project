@@ -15,13 +15,9 @@ Here are some ideas to get you started and add to this comment section:
 
 # Computer Languages: Java
 
-## Group Project (this is where I'd like for the project name to go)
+## JavaTrainer
 
-## Project Description
-
-So far, we have a few classes and a basic understanding of what they do. 
-The CreateHash is what deals with the login information,
-whether they're creating a new account or logging back into their account
+JavaTrainer aims to empower individuals in their fitness journeys by providing a comprehensive and user-friendly tool for tracking work-outs. Many individuals face challenges in maintaining a consistent workout routine.
 
 The Frame class is the GUI interface.
 ## Group Members and Respective Roles
@@ -29,4 +25,11 @@ The Frame class is the GUI interface.
 1. Justin Eugene - Workout Regime Recommendation
 2. Jake Salter -  Database
 3. Tony Nguyen - Connections
-4. Yamen Abogamiza - GUI
+4. Yamen Abogamiza
+   
+  1) Created welcome page
+  2) Created login/register page
+  3) Created questionnaire
+  4) Created screens for all 7 days
+  5) Created back-and-forth buttons to traverse back
+  and forth between the screens at the user’s discretion
